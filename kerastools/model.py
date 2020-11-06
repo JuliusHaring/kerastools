@@ -5,7 +5,7 @@ from tensorflow import keras
 class Model:
     def __init__(self, config, name):
         self.config = config
-        self.name = name
+        self.name = os.path.splitext(name)[0]
         self.is_fitted = False
 
     @staticmethod
@@ -40,6 +40,9 @@ class Model:
     def fit(self, generator, validation_data, epochs, callbacks):
         self.config.fit(generator, validation_data=validation_data, epochs=epochs, callbacks=callbacks)
         self.is_fitted = True
+
+    def predict(self, X):
+        return self.config.predict(X)
 
     def get_is_fitted(self):
         return self.is_fitted

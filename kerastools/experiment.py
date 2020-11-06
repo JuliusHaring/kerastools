@@ -2,6 +2,7 @@ import os
 import numpy as np
 
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
 
 from model import Model
 from misc import BatchGenerator
@@ -49,7 +50,10 @@ class Experiment:
         for cb in callbacks:
             self.add_callback(cb)
 
-    def run_experiments(self, epochs=100, batch_size=32, shuffle=True, window_size=None, patience=None, evaluate=True):
+    def run_experiments(self, epochs=100, batch_size=1, shuffle=True, window_size=None, patience=None, evaluation_metrics=[classification_report], store_evaluation=None, vote_alg='hard'):
+        if window_size is not None and window_size > 0 and len(np.array(self.X_train[0]).shape) < 2:
+            raise Exception('X(_train, ...) must be 3-dimensional to employ windowing!')
+
         patience_ = []
         if patience is not None:
             patience_.append(keras.callbacks.EarlyStopping(patience=patience))
@@ -61,13 +65,13 @@ class Experiment:
                     epochs=epochs,
                     callbacks=self.callbacks + patience_)
             except:
-                print('Experiment %s failed!' % model)
+                print('Experiment %s failed! Check your input dimensions.' % model)
 
-        if evaluate:
+        if evaluation_metrics is not None:
             for model in self.models:
                 if model.get_is_fitted():
                     print('Evaluating %s!' % model)
-                    Evaluation.evaluate(model, self.X_test, self.y_test, self.to_categorical)
+                    Evaluation.evaluate(model, self.X_test, self.y_test, self.to_categorical, evaluation_metrics, store_evaluation, window_size, vote_alg)
             
             
 
