@@ -12,7 +12,7 @@ from evaluation import Evaluation
 from tensorflow import keras
 
 class Experiment:
-    def __init__(self, config_folder, loss, optimizer, feature_length):
+    def __init__(self, config_folder, loss, optimizer, feature_length, metrics=[keras.metrics.Precision(), keras.metrics.Recall(), keras.metrics.Accuracy()]):
         self.models = []
         self.callbacks= []
         self.is_categorical = False
@@ -24,11 +24,11 @@ class Experiment:
             if model is not None:
                 self.models.append(model)
 
-        self.compile_models(loss, optimizer)
+        self.compile_models(loss, optimizer, metrics)
 
-    def compile_models(self, loss, optimizer):
+    def compile_models(self, loss, optimizer, metrics):
         for model in self.models:
-            model.compile(loss=loss, optimizer=optimizer)
+            model.compile(loss=loss, optimizer=optimizer, metrics=metrics)
 
     def load_data(self, X, y, val_size, test_size=None, to_categorical=False, normalize=True):
         if to_categorical:
@@ -41,7 +41,7 @@ class Experiment:
         else:
             norm = Normalizer()
             X = norm.transform(X)
-            
+
         if hasattr(y[0], '__len__') or len(np.array(y).shape) > 1:
             self.is_categorical = True
         

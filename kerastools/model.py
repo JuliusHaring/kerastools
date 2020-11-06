@@ -34,8 +34,8 @@ class Model:
             json = json.replace(f3d, f3d_fix)
         return json
 
-    def compile(self, loss, optimizer):
-        self.config.compile(loss=loss, optimizer=optimizer)
+    def compile(self, loss, optimizer, metrics):
+        self.config.compile(loss=loss, optimizer=optimizer, metrics=metrics)
 
     def fit(self, generator, validation_data, epochs, callbacks):
         self.config.fit(generator, validation_data=validation_data, epochs=epochs, callbacks=callbacks)
