@@ -3,6 +3,7 @@ import numpy as np
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
+from sklearn.preprocessing import Normalizer
 
 from model import Model
 from misc import BatchGenerator
@@ -14,7 +15,8 @@ class Experiment:
     def __init__(self, config_folder, loss, optimizer, feature_length):
         self.models = []
         self.callbacks= []
-        self.to_categorical = False
+        self.is_categorical = False
+        self.is_3d = False
 
         for config_file in os.listdir(config_folder):
             config_path = os.path.join(config_folder, config_file)
@@ -28,10 +30,21 @@ class Experiment:
         for model in self.models:
             model.compile(loss=loss, optimizer=optimizer)
 
-    def load_data(self, X, y, val_size, test_size=None, to_categorical=False):
+    def load_data(self, X, y, val_size, test_size=None, to_categorical=False, normalize=True):
         if to_categorical:
             y = keras.utils.to_categorical(y)
 
+        if hasattr(X[0][0], '__len__') or len(np.array(X[0]).shape) > 1:
+            self.is_3d = True
+            norm = Normalizer()
+            X = [norm.transform(x) for x in X]
+        else:
+            norm = Normalizer()
+            X = norm.transform(X)
+            
+        if hasattr(y[0], '__len__') or len(np.array(y).shape) > 1:
+            self.is_categorical = True
+        
         X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=val_size)
 
         X_test, y_test = None, None
@@ -40,8 +53,6 @@ class Experiment:
             
         self.X_train, self.X_test, self.X_val = X_train, X_test, X_val
         self.y_train, self.y_test, self.y_val = y_train, y_test, y_val
-
-        self.to_categorical = to_categorical
 
     def add_callback(self, callback):
         self.callbacks.append(callback)
@@ -71,7 +82,7 @@ class Experiment:
             for model in self.models:
                 if model.get_is_fitted():
                     print('Evaluating %s!' % model)
-                    Evaluation.evaluate(model, self.X_test, self.y_test, self.to_categorical, evaluation_metrics, store_evaluation, window_size, vote_alg)
+                    Evaluation.evaluate(model, self.X_test, self.y_test, self.is_categorical, evaluation_metrics, store_evaluation, window_size, vote_alg)
             
             
 

@@ -36,7 +36,7 @@ class Evaluation:
         return 0 if a > b else 1  
 
     @staticmethod
-    def evaluate(model, X, y, to_categorical, metrics, store=None, window_size=None, vote_alg='hard'):
+    def evaluate(model, X, y, is_categorical, metrics, store=None, window_size=None, vote_alg='hard'):
         sep = get_separator()
         evaluation = 'Evaluation of model %s' % model
 
@@ -46,7 +46,7 @@ class Evaluation:
         else:
             predictions, y = Evaluation.vote(model, X, y, vote_alg, window_size)
 
-        if to_categorical or hasattr(y[0], '__len__') or len(np.array(y).shape) > 1:
+        if is_categorical:
             y = np.argmax(y, axis=1)
             predictions = np.argmax(predictions, axis=1)
 

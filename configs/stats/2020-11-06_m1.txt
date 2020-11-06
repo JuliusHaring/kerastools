@@ -1,14 +1,14 @@
 Evaluation of model ./configs/m1
 ----------
 roc_auc_score:
-0.5833333333333333
+0.5191919191919192
 ----------
 classification_report:
               precision    recall  f1-score   support
 
-           0       0.50      0.50      0.50        16
-           1       0.67      0.67      0.67        24
+           0       0.56      0.93      0.70        55
+           1       0.56      0.11      0.19        45
 
-    accuracy                           0.60        40
-   macro avg       0.58      0.58      0.58        40
-weighted avg       0.60      0.60      0.60        40
+    accuracy                           0.56       100
+   macro avg       0.56      0.52      0.44       100
+weighted avg       0.56      0.56      0.47       100
