@@ -6,6 +6,7 @@ class Model:
     def __init__(self, config, name):
         self.config = config
         self.name = name
+        self.is_fitted = False
 
     @staticmethod
     def from_config(config_path, feature_length, load_weights=True):
@@ -38,6 +39,10 @@ class Model:
 
     def fit(self, generator, validation_data, epochs, callbacks):
         self.config.fit(generator, validation_data=validation_data, epochs=epochs, callbacks=callbacks)
+        self.is_fitted = True
+
+    def get_is_fitted(self):
+        return self.is_fitted
         
     def __str__(self):
         return self.name

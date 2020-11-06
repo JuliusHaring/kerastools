@@ -9,4 +9,4 @@ exp = Experiment('./configs/', loss='categorical_crossentropy', optimizer= keras
 
 exp.load_data(np.random.rand(100,21), np.random.rand(100, 2), val_size=0.2, test_size=0.2)
 
-exp.run_experiments(epochs=2)
+exp.run_experiments(patience=2, epochs=10)
