@@ -14,4 +14,11 @@ with open('./configs/m2.json', 'w') as f:
     f.write(model2.to_json())
 model2.save_weights('./configs/m2.h5')
 
+ae = keras.models.Sequential()
+ae.add(keras.layers.Dense(10, activation='sigmoid'))
+ae.add(keras.layers.Dense(5, activation='sigmoid'))
+ae.add(keras.layers.Dense(10, activation='softmax'))
+with open('./configs/ae.json', 'w') as f:
+    f.write(ae.to_json())
+
 

@@ -70,6 +70,7 @@ class Experiment:
             patience_.append(keras.callbacks.EarlyStopping(patience=patience))
 
         for model in self.models:
+            print('Fitting model %s !' % model)
             try:
                 model.fit(BatchGenerator(self.X_train, self.y_train, batch_size=batch_size, shuffle=shuffle, window_size=window_size),
                     validation_data=BatchGenerator(self.X_val, self.y_val, window_size=window_size, shuffle=False),
@@ -81,7 +82,7 @@ class Experiment:
         if evaluation_metrics is not None:
             for model in self.models:
                 if model.get_is_fitted():
-                    print('Evaluating %s!' % model)
+                    print('Evaluating %s !' % model)
                     Evaluation.evaluate(model, self.X_test, self.y_test, self.is_categorical, evaluation_metrics, store_evaluation, window_size, vote_alg)
             
             
