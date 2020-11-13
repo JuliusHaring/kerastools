@@ -9,17 +9,30 @@ class Model:
         self.is_fitted = False
 
     @staticmethod
-    def from_config(config_path, feature_length, load_weights=True):
-        if '.json' in os.path.splitext(config_path)[1]:
+    def from_config(config_path, feature_length=None, custom_objects=None, load_weights=True):
+        extension = os.path.splitext(config_path)[1]
+        if '.json' in extension:
+            if feature_length is None:
+                raise Exception('\'feature_length\' must be provided if .json config files are provided.')
             fname = os.path.splitext(config_path)[0]
-
             print('Loading a config from: %s' % config_path)
+
             with open(config_path, 'r') as f:
                 json = f.read()
                 json = Model.reshape(json, feature_length)
                 model = keras.models.model_from_json(json)
                 
                 return Model(model, config_path)
+        if '.h5' in extension:
+            fname = os.path.splitext(config_path)[0]
+            try:
+                print('Loading a config from: %s' % config_path)
+
+                model = keras.models.load_model(config_path, custom_objects=custom_objects)
+                return Model(model, config_path)
+            except:
+                print('Tried to load a .h5 file that is not a model. Skipping %s' % fname)
+
     
     @staticmethod
     def reshape(json, feature_length):

@@ -18,4 +18,4 @@ features = np.array(features)
 
 exp.load_data(features, features, val_size=0.2, test_size=0.5)
 
-exp.run_experiments(epochs=20, patience=10,batch_size=10, evaluation_metrics=[classification_report], store_evaluation='./configs/stats/')
+exp.run_experiments(epochs=100, patience=10,batch_size=10, evaluation_metrics=[classification_report], store_evaluation='./configs/stats/')

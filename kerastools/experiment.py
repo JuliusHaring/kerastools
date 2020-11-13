@@ -81,9 +81,8 @@ class Experiment:
 
         if evaluation_metrics is not None:
             for model in self.models:
-                if model.get_is_fitted():
-                    print('Evaluating %s !' % model)
-                    Evaluation.evaluate(model, self.X_test, self.y_test, self.is_categorical, evaluation_metrics, store_evaluation, window_size, vote_alg)
+                print('Evaluating %s !' % model)
+                Evaluation.evaluate(model, self.X_test, self.y_test, self.is_categorical, evaluation_metrics, store_evaluation, window_size, vote_alg)
             
             
 

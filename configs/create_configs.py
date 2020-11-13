@@ -21,4 +21,11 @@ ae.add(keras.layers.Dense(10, activation='softmax'))
 with open('./configs/ae.json', 'w') as f:
     f.write(ae.to_json())
 
+ae2 = keras.models.Sequential()
+ae2.add(keras.layers.Dense(10, activation='sigmoid', input_shape=(None, 10)))
+ae2.add(keras.layers.Dense(5, activation='sigmoid'))
+ae2.add(keras.layers.Dense(10, activation='softmax'))
+ae2.save('./configs/ae2.h5')
+
+
 

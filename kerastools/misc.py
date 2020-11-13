@@ -14,7 +14,6 @@ class BatchGenerator(keras.utils.Sequence):
                     y_temp.append(y_)
                     indices.append(idx)
             X, y = X_temp, y_temp
-
         self.indices = indices
         self.X = X
         self.y = y

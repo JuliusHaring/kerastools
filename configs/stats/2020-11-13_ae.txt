@@ -1,0 +1,19 @@
+Evaluation of model ./configs/ae
+----------
+classification_report:
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00         5
+           1       1.00      1.00      1.00         8
+           2       1.00      1.00      1.00        11
+           3       1.00      1.00      1.00         8
+           4       1.00      1.00      1.00        16
+           5       1.00      1.00      1.00        11
+           6       1.00      1.00      1.00        11
+           7       1.00      1.00      1.00         9
+           8       1.00      1.00      1.00        10
+           9       1.00      1.00      1.00        11
+
+    accuracy                           1.00       100
+   macro avg       1.00      1.00      1.00       100
+weighted avg       1.00      1.00      1.00       100
